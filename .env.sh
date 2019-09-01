@@ -1,0 +1,3 @@
+export REDIS_PORT=6379
+export PGPORT=5432
+export SERVERPORT=5000

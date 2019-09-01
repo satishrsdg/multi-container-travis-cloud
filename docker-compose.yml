@@ -1,0 +1,72 @@
+version: '3'
+services:
+  postgres:
+    env_file: .env
+    image: postgres:alpine
+    container_name: local-postgres
+    ports: 
+      - '${PGPORT}:${PGPORT}'
+    
+  redis:
+    env_file: .env
+    image: redis:alpine
+    container_name: local-redis
+    ports: 
+      - '${REDIS_PORT}:${REDIS_PORT}'
+
+  nginx:
+    restart: always
+    image: nginx:alpine
+    container_name: local-nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    ports: 
+      - '3050:80'
+    depends_on:
+      - api
+      - client
+
+  api:
+    env_file: .env
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    container_name: local-api
+    ports: 
+      - '${SERVERPORT}:${SERVERPORT}'
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    depends_on:
+      - redis
+      - postgres
+
+  worker:
+    env_file: .env
+    build:
+      context: ./worker
+      dockerfile: Dockerfile.dev
+    container_name: local-worker
+    volumes:
+      - ./worker:/app
+      - /app/node_modules
+
+  client:
+    env_file: .env
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    container_name: local-client
+    ports:
+      - '${CLIENTPORT}:${CLIENTPORT}'
+    volumes:
+      - ./client:/app
+      - /app/node_modules    
+    depends_on:
+      - api
+
+
+
+  
