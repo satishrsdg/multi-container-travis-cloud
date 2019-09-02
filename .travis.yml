@@ -10,17 +10,17 @@ script:
   - docker run satishrsdg/react-test npm test -- --coverage
 
 after_success:
-  - docker build -t satishrsdg/multi-client ./client
-  - docker build -t satishrsdg/multi-nginx ./nginx
-  - docker build -t satishrsdg/multi-server ./server
-  - docker build -t satishrsdg/multi-worker ./worker
+  - docker build -t satishrsdg/experiments:mathfunction-multi-client ./client
+  - docker build -t satishrsdg/experiments:mathfunction-multi-nginx ./nginx
+  - docker build -t satishrsdg/experiments:mathfunction-multi-server ./server
+  - docker build -t satishrsdg/experiments:mathfunction-multi-worker ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASS" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push satishrsdg/multi-client
-  - docker push satishrsdg/multi-nginx
-  - docker push satishrsdg/multi-server
-  - docker push satishrsdg/multi-worker
+  - docker push satishrsdg/experiments:mathfunction-multi-client
+  - docker push satishrsdg/experiments:mathfunction-multi-nginx
+  - docker push satishrsdg/experiments:mathfunction-multi-server
+  - docker push satishrsdg/experiments:mathfunction-multi-worker
 
 # deploy:
 #   provider: elasticbeanstalk
