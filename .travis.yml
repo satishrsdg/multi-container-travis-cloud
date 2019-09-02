@@ -15,7 +15,8 @@ after_success:
   - docker build -t satishrsdg/experiments:mathfunction-multi-server ./server
   - docker build -t satishrsdg/experiments:mathfunction-multi-worker ./worker
   # Log in to the docker CLI
-  - echo "$DOCKER_PASS" | docker login -u "$DOCKER_ID" --password-stdin
+  #- echo "$DOCKER_PASS" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker login -u "$DOCKER_ID" -p "$DOCKER_PASS"
   # Take those images and push them to docker hub
   - docker push satishrsdg/experiments:mathfunction-multi-client
   - docker push satishrsdg/experiments:mathfunction-multi-nginx
